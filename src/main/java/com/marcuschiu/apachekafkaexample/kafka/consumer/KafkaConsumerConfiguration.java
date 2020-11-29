@@ -1,4 +1,4 @@
-package com.marcuschiu.apachekafkaexample.consumer.kafka;
+package com.marcuschiu.apachekafkaexample.kafka.consumer;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -18,7 +18,7 @@ import java.util.Map;
 public class KafkaConsumerConfiguration {
 
     @Value(value = "${kafka.bootstrapAddress}")
-    String bootstrapAddress;
+    private String bootstrapAddress;
 
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
