@@ -1,4 +1,4 @@
-package com.marcuschiu.apachekafkaexample.kafka;
+package com.marcuschiu.apachekafkaexample.config;
 
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -11,13 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class KafkaTopicConfiguration {
+public class KafkaAdminConfiguration {
 
     @Value(value = "${kafka.bootstrapAddress}")
     private String bootstrapAddress;
-
-    @Value(value = "${kafka.topic.name}")
-    private String topicName;
 
     @Bean
     public KafkaAdmin kafkaAdmin() {
@@ -25,6 +22,9 @@ public class KafkaTopicConfiguration {
         configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         return new KafkaAdmin(configs);
     }
+
+    @Value(value = "${kafka.topic.name}")
+    private String topicName;
 
     @Bean
     public NewTopic topic1() {

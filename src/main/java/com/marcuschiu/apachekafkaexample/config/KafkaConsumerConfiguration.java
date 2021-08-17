@@ -1,4 +1,4 @@
-package com.marcuschiu.apachekafkaexample.kafka.consumer;
+package com.marcuschiu.apachekafkaexample.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;

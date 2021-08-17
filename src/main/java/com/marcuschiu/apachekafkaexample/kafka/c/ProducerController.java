@@ -1,7 +1,6 @@
-package com.marcuschiu.apachekafkaexample.kafka.producer;
+package com.marcuschiu.apachekafkaexample.kafka.c;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.util.concurrent.ListenableFuture;
@@ -10,28 +9,28 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@RestController("ProducerControllerC")
 public class ProducerController {
 
+    public static final String TOPIC = "c";
+
     @Autowired
-    KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, String> kafkaTemplate;
 
-    @Value(value = "${kafka.topic.name}")
-    String topicName;
-
-    @GetMapping("/produce-message/{message}")
-    public void sendMessage(@PathVariable(value="message") String msg) {
-        ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(topicName, msg);
+    @GetMapping("/produce-message/c/{message}")
+    public String sendMessage(@PathVariable(value = "message") String msg) {
+        ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(TOPIC, msg);
         future.addCallback(new ListenableFutureCallback<>() {
             @Override
             public void onSuccess(SendResult<String, String> result) {
-                System.out.println("Sent message=[" + msg + "] with offset=[" + result.getRecordMetadata().offset() + "]");
+                System.out.println("Produced message=['" + msg + "'] onto topic=['" + TOPIC + "'] with offset=[" + result.getRecordMetadata().offset() + "]");
             }
 
             @Override
             public void onFailure(Throwable ex) {
-                System.out.println("Unable to send message=[" + msg + "] due to : " + ex.getMessage());
+                System.out.println("Unable to send message=['" + msg + "'] due to : " + ex.getMessage());
             }
         });
+        return "message sent";
     }
 }
